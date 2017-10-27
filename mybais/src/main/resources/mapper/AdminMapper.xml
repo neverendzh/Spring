@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaishengit.mapper.AdminMapper"><!---->
+
+    <!--其中id相当云方法名，parameterType相当于传递的参数，需要写类的完全限定名。-->
+    <insert id="save" parameterType="admin"><!--配置的别名不是完全限定名，在这个标签执行时对应在mybatis.xml文件中配置的别名，也就是央射到一个实体类-->
+        insert into admin(admin_name,admin_password)
+        values(#{adminName},#{adminPassword})
+    </insert>
+
+    <select id="findAll" resultType="admin"><!--resultType是返回类型，他会自动判断返回的类型，如果是多个就是集合型式返回-->
+       SELECT
+            id,
+            admin_name,
+            admin_password
+        FROM
+            admin
+    </select>
+
+    <select id="findById" parameterType="long" resultType="admin"><!--parameterType是传入的数据类型-->
+        SELECT
+            id,
+            admin_name,
+            admin_password
+        FROM
+            admin
+        WHERE
+            id=#{id}
+    </select>
+    
+    <update id="update" parameterType="admin"><!--parameterType传入一个对象-->
+        UPDATE  admin
+        set admin_name = #{adminName},admin_password = #{adminPassword}
+        WHERE
+            id=#{id}
+
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE  FROM  admin WHERE id = #{id}
+
+    </delete>
+</mapper>
