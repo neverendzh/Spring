@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--bean中的scope属性默认是singleton也就是单例类，
+     如果被管理的类不是单例类，那么可以将scop的属性值设置为prototype-->
+    <!--<bean id="userDao" class="com.kaishengit.dao.UserDao" scope="prototype"/>&lt;!&ndash;name和id的区别id只有一个名字，name可以拥有两个名字，在getBean中都可以获取到Spring容器中的对象&ndash;&gt;-->
+    <bean id="userDao" class="com.kaishengit.dao.UserDao"/>
+    <!--<bean id="userDao" class="com.kaishengit.dao.UserDao" lazy-init="true"/> &lt;!&ndash;lazy-init="true"表示懒加载，在加载这个类时不会创建这个类的实例对象。只有调用getBean时才会创建类对象&ndash;&gt;-->
+    <!--<bean name="userDao,myDao" class="com.kaishengit.dao.UserDao"/>-->
+    <!--如果需要给bean节点起一个别名使用alias节点配置别名-->
+    <alias name="userDao" alias="userDao2"/>
+    <!--放在spring容器中的类默认是单例类，注意：不要将有状态的类放在spring容器中-->
+
+
+    <!--注入类时UserDao被注入类时UserServiceImpl
+    第一种写法-->
+    <bean id="userService" class="com.kaishengit.service.impl.UserServiceImpl">
+        <property name="userDao" ref="userDao"/>
+        <property name="id" value="100"/>
+        <property name="name" value="tom"/>
+        <property name="nameList" >
+            <list>
+                <value>aaa</value>
+                <value>bbb</value>
+            </list>
+        </property>
+        <property name="userDaoSet">
+            <set>
+                <ref bean="userDao"/>
+            </set>
+        </property>
+        <property name="userDaoMap">
+            <map>
+                <entry key="userDao" value-ref="userDao"/>
+            </map>
+        </property>
+        <property name="properties">
+            <props>
+                <prop key="k1">v1</prop>
+                <prop key="k2">v2</prop>
+            </props>
+        </property>
+    </bean>
+    <!--第二种写法-->
+    <!--<bean id="userService" class="com.kaishengit.service.impl.UserServiceImpl">
+        <property name="userDao" >
+            <ref bean="userDao"/>
+        </property>
+    </bean>-->
+    <!--第三种写法,这个便是这个UserDao值可以注入到UserService中，其他不可以注入这个类-->
+    <!--<bean id="userService" class="com.kaishengit.service.impl.UserServiceImpl">
+        <property name="userDao">
+            <bean class="com.kaishengit.dao.UserDao"/>
+        </property>
+    </bean>-->
+    <!--第四种写法 p注入-->
+        <!--<bean id="userService" class="com.kaishengit.service.impl.UserServiceImpl" p:userDao-ref="userDao"/>-->
+
+    </beans>
