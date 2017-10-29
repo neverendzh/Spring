@@ -5,59 +5,52 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!--bean中的scope属性默认是singleton也就是单例类，
-     如果被管理的类不是单例类，那么可以将scop的属性值设置为prototype-->
-    <!--<bean id="userDao" class="com.kaishengit.dao.UserDao" scope="prototype"/>&lt;!&ndash;name和id的区别id只有一个名字，name可以拥有两个名字，在getBean中都可以获取到Spring容器中的对象&ndash;&gt;-->
     <bean id="userDao" class="com.kaishengit.dao.UserDao"/>
-    <!--<bean id="userDao" class="com.kaishengit.dao.UserDao" lazy-init="true"/> &lt;!&ndash;lazy-init="true"表示懒加载，在加载这个类时不会创建这个类的实例对象。只有调用getBean时才会创建类对象&ndash;&gt;-->
-    <!--<bean name="userDao,myDao" class="com.kaishengit.dao.UserDao"/>-->
-    <!--如果需要给bean节点起一个别名使用alias节点配置别名-->
-    <alias name="userDao" alias="userDao2"/>
-    <!--放在spring容器中的类默认是单例类，注意：不要将有状态的类放在spring容器中-->
-
-
-    <!--注入类时UserDao被注入类时UserServiceImpl
-    第一种写法-->
+    <bean id="userDaoTwo" class="com.kaishengit.dao.UserDaoTwo"/>
     <bean id="userService" class="com.kaishengit.service.impl.UserServiceImpl">
-        <property name="userDao" ref="userDao"/>
-        <property name="id" value="100"/>
-        <property name="name" value="tom"/>
-        <property name="nameList" >
-            <list>
-                <value>aaa</value>
-                <value>bbb</value>
-            </list>
-        </property>
-        <property name="userDaoSet">
-            <set>
-                <ref bean="userDao"/>
-            </set>
-        </property>
-        <property name="userDaoMap">
-            <map>
-                <entry key="userDao" value-ref="userDao"/>
-            </map>
-        </property>
-        <property name="properties">
-            <props>
-                <prop key="k1">v1</prop>
-                <prop key="k2">v2</prop>
-            </props>
-        </property>
-    </bean>
-    <!--第二种写法-->
-    <!--<bean id="userService" class="com.kaishengit.service.impl.UserServiceImpl">
-        <property name="userDao" >
-            <ref bean="userDao"/>
-        </property>
-    </bean>-->
-    <!--第三种写法,这个便是这个UserDao值可以注入到UserService中，其他不可以注入这个类-->
-    <!--<bean id="userService" class="com.kaishengit.service.impl.UserServiceImpl">
-        <property name="userDao">
-            <bean class="com.kaishengit.dao.UserDao"/>
-        </property>
-    </bean>-->
-    <!--第四种写法 p注入-->
-        <!--<bean id="userService" class="com.kaishengit.service.impl.UserServiceImpl" p:userDao-ref="userDao"/>-->
+        <!--第一种注入方式-->
+        <!--name是构造方法的参数名称，ref是被注入类的bean节点的id-->
+        <!--<constructor-arg name="userDao" ref="userDao"/>-->
 
-    </beans>
+        <!--第二种注入方式-->
+        <!--index是构造方法参数的索引，从零开始-->
+        <!--<constructor-arg index="0" ref="userDao"/>
+        <constructor-arg index="1" ref="userDaoTwo"/>-->
+
+        <!-- 第三中方式-->
+        <!--如果在构造方法的有两个一样的参数类型是不可以的。-->
+      <!--<constructor-arg type="com.kaishengit.dao.UserDao" ref="userDao"/>
+        <constructor-arg type="com.kaishengit.dao.UserDaoTwo" ref="userDaoTwo"/>-->
+
+        <!--第四种方式-->
+        <!--使用name等于属性名，value直接赋值-->
+        <constructor-arg name="userDao" ref="userDao"/>
+        <constructor-arg name="userDaoTwo" ref="userDaoTwo"/>
+        <constructor-arg name="name" value="jak"/>
+
+    </bean>
+
+
+
+    <!--自动注入第一种写法-->
+    <!--autowire表示在自动注入时会根据需要注入的对象的名字去寻找容器中的bean节点的id
+    bean阶段的id属性名称和set方法中的参数名称一致，会根据需要注入的set参数名称寻找Spring中容器中ben的id属性名称-->
+    <!--<bean id ="userServiceImplTwo"
+          class="com.kaishengit.service.impl.UserServiceImplTwo"
+          autowire="byName"/>-->
+
+
+    <!--自动注入第二种写法-->
+    <!--根据需要传入的类型进行查找注入-->
+   <!-- <bean id ="userServiceImplTwo"
+          class="com.kaishengit.service.impl.UserServiceImplTwo"
+          autowire="byType"/>-->
+
+    <!--自动注入第三种写法-->
+    <!--根据需要传入的类型进行查找注入,先根据构造方法传入参数的名称和Spring容器中bean进行匹配，
+    如果没有匹配到，那么就根据构造方法的参数类型进行匹配-->
+    <!--如果使用xml形式配置，则一般不使用自动注入，如果是注解的形式，则使用自动注入-->
+    <bean id ="userServiceImplTwo"
+          class="com.kaishengit.service.impl.UserServiceImplTwo"
+          autowire="constructor"/>
+ </beans>
