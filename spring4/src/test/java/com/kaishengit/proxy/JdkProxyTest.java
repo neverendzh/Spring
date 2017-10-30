@@ -1,8 +1,10 @@
 package com.kaishengit.proxy;
 
 import com.kaishengit.proxy.jdk.MyInvocationHandler;
+import com.kaishengit.proxy.jdk.TimeInvocationHandler;
 import com.kaishengit.service.UserService;
 import com.kaishengit.service.impl.UserServiceImpl;
+import com.kaishengit.service.impl.UserServiceImplProxy;
 import com.kaishengit.service.impl.UserServiceImplTwo;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -14,6 +16,7 @@ import java.lang.reflect.Proxy;
 /**
  * @author zh
  * Created by Administrator on 2017/10/29.
+ * 动态代理测试
  */
 public class JdkProxyTest {
 
@@ -47,6 +50,19 @@ public class JdkProxyTest {
         MyInvocationHandler invocationHandler = new MyInvocationHandler(userServiceImplTwo);
         UserService userService1 =(UserService) Proxy.newProxyInstance(userServiceImplTwo.getClass().getClassLoader(),userServiceImplTwo.getClass().getInterfaces(),invocationHandler);
         userService1.save();
+    }
+
+    @Test
+    public void time(){//动态代理jdk自带实例
+        UserServiceImplProxy userServiceImplProxy = new UserServiceImplProxy();
+
+        TimeInvocationHandler timeInvocationHandler = new TimeInvocationHandler(userServiceImplProxy);
+
+        UserService userService = (UserService) Proxy.newProxyInstance(userServiceImplProxy.getClass().getClassLoader(),userServiceImplProxy.getClass().getInterfaces(),timeInvocationHandler);
+
+        userService.save();
+        userService.update();
+
     }
 
 }

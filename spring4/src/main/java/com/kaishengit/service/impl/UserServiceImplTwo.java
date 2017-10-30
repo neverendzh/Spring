@@ -25,4 +25,14 @@ public class UserServiceImplTwo implements UserService {
         System.out.println("service-----seve");
         userDaoTwo.save();
     }
+
+    @Override
+    public void update(){
+        System.out.println("UserService-----Update");
+    }
+
+    @Override
+    public int count() {
+        return 100;
+    }
 }

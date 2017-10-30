@@ -37,4 +37,19 @@ public class UserServiceImpl implements UserService {
             userDaoTwo.save();
             System.out.println("name :"+name);
     }
+
+    @Override
+    public void update() {
+        if(1==1){
+            throw new RuntimeException("这是“测试”使用的异常");
+        }
+
+    }
+
+    @Override
+    public int count() {
+            return 1234;
+    }
+
+
 }
