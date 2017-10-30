@@ -1,3 +1,4 @@
+<!--
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -7,10 +8,10 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <!--自动扫描com.kaishengit包下边的所有的类，代有特殊注释的直接注入spring容器-->
+    &lt;!&ndash;自动扫描com.kaishengit包下边的所有的类，代有特殊注释的直接注入spring容器&ndash;&gt;
     <context:component-scan base-package="com.kaishengit"/>
-    <!--开启基于注解的AOP-->
+    &lt;!&ndash;开启基于注解的AOP&ndash;&gt;
     <aop:aspectj-autoproxy/>
 
 
-</beans>
+</beans>-->
