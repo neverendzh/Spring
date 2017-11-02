@@ -34,7 +34,7 @@ public class SpringJdbcTemplateTuserDao {
         return jdbcTemplate.queryForObject(sql,new BeanPropertyRowMapper<>(Tuser.class),id);
     }
 
-    public List<Tuser> findAll(){
+    public List<Tuser>   findAll(){
         String sql = "select * from t_user order by id desc";
 
         return jdbcTemplate.query(sql, new TuserMapper());

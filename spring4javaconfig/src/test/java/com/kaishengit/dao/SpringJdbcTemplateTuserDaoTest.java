@@ -17,7 +17,7 @@ import java.util.List;
  * Created by Administrator on 2017/10/30.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = ApplicationJDBC.class)//(locations = "classpath:applicationContext.xml")
+@ContextConfiguration(locations = "classpath:applicationContext.xml")//(classes = ApplicationJDBC.class)//(locations = "classpath:applicationContext.xml")
 public class SpringJdbcTemplateTuserDaoTest {
 
     @Autowired

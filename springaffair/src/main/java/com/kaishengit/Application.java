@@ -2,32 +2,31 @@ package com.kaishengit;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
 /**
- * 数据库配置类
  * @author zh
+ * 配置类，替代applicationContext.xml文件的类
  * Created by Administrator on 2017/10/31.
+ * @EnableTransactionManagement是开启基于注解的事务配置
  */
 @Configuration
 @ComponentScan
-@PropertySource(value = "classpath:config.properties")//,ignoreResourceNotFound = true)//读取properties配置文件,其中ignoreResourceNotFound = true时表示忽略未找到资源
-public class ApplicationJDBC {
+@EnableAspectJAutoProxy
+@EnableTransactionManagement
+public class Application {
 
     @Autowired
     private Environment environment;
-   /* @Value("${jdbc.driver}")
-    private String driverClassName;
-    @Value("${jdbc.url}")
-    private String url;*/
     @Bean
     public DataSource dataSource(){
         BasicDataSource basicDataSource = new BasicDataSource();
@@ -43,5 +42,12 @@ public class ApplicationJDBC {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.setDataSource(dataSource());
         return jdbcTemplate;
+    }
+
+    @Bean
+    public DataSourceTransactionManager transactionManager(){
+        DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
+        transactionManager.setDataSource(dataSource());
+        return transactionManager;
     }
 }

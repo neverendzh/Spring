@@ -17,19 +17,19 @@ public class AopAdvice {
     @Pointcut("execution(* com.kaishengit.service..*.*(..))")
     public void pointcut(){}
 
-    @Before("pointcut()")
+    /*@Before("pointcut()")
     public void before(){
         System.out.println("前置通知");
-    }
+    }*/
 
     //在执行完方法，如果有一个返回值，则定义后置通知方法参数列表中有Object的参数类型
-    @AfterReturning(pointcut = "pointcut()" ,returning = "result")
+   /* @AfterReturning(pointcut = "pointcut()" ,returning = "result")
     public void  afterReturning(Object result){
 
         System.out.println("后置通知"+"result"+result);
-    }
+    }*/
 
-    @AfterThrowing(pointcut = "pointcut()",throwing = "ex")
+   /* @AfterThrowing(pointcut = "pointcut()",throwing = "ex")
     public void afterThrowing(Exception ex){
         System.out.println("异常通知-->"+ex.getMessage());
     }
@@ -38,7 +38,7 @@ public class AopAdvice {
     public void after(){
         System.out.println("最终通知");
     }
-
+*/
 
     @Around("pointcut()")
     public Object aroundAdvice(ProceedingJoinPoint joinPoint){

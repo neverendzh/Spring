@@ -1,9 +1,12 @@
 package com.kaishengit.service.impl;
 
 import com.kaishengit.dao.ProductDao;
+import com.kaishengit.dao.SpringJdbcTemplateTuserDao;
+import com.kaishengit.entity.Tuser;
 import com.kaishengit.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -21,6 +24,8 @@ public class ProductServiceImpl implements ProductService {
     //@Inject
     @Resource
     private ProductDao productDao;
+    @Autowired
+    private SpringJdbcTemplateTuserDao tuserDao;
 
     /*
     @Autowired
@@ -33,8 +38,19 @@ public class ProductServiceImpl implements ProductService {
         this.productDao = productDao;
     }*/
 
-    @Override
+   @Override
     public void save() {
             productDao.save();
+    }
+
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void save(Tuser tuser) {//表示此方法在执行时出现在事务中，如果Transaction加载类上，表示这个类中的所有方法都会出现在事务中
+
+            tuserDao.save(tuser);
+            if (1==1){
+                throw new RuntimeException();
+            }
+            tuserDao.save(tuser);
     }
 }
